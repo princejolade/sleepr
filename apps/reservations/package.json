@@ -1,0 +1,10 @@
+{
+  "name": "@sleepr/reservations",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "keywords": [],
+  "author": "Abdullahi Adeniran",
+  "license": "MIT",
+  "dependencies": {}
+}

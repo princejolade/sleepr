@@ -1,0 +1,12 @@
+{
+  "name": "@sleepr/payments",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main.js",
+  "keywords": [],
+  "author": "Abdullahi Adeniran",
+  "license": "MIT",
+  "dependencies": {
+    "stripe": "^14.17.0"
+  }
+}

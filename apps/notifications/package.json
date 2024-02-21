@@ -1,0 +1,15 @@
+{
+  "name": "@sleepr/notifications",
+  "version": "0.0.1",
+  "description": "",
+  "main": "src/main.js",
+  "keywords": [],
+  "author": "Abdullahi Adeniran",
+  "license": "MIT",
+  "dependencies": {
+    "nodemailer": "^6.9.9"
+  },
+  "devDependencies": {
+    "@types/nodemailer": "^6.4.14"
+  }
+}
