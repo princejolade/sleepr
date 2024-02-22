@@ -11,6 +11,7 @@ import {
   DatabaseModule,
   AUTH_SERVICE,
   PAYMENTS_SERVICE,
+  HealthModule,
 } from '@app/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import * as Joi from 'joi';
@@ -18,6 +19,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
+    HealthModule,
     ConfigModule.forRoot({
       isGlobal: true,
       validationSchema: Joi.object({
