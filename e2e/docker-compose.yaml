@@ -1,0 +1,45 @@
+services:
+  e2e:
+   build:
+    dockerfile: ./Dockerfile
+   volumes:
+     - ./specs:/app/specs
+   depends_on:
+     - mongo
+     - reservations
+     - auth
+     - payments
+     - notifications
+     
+      
+  reservations:
+   image: europe-west1-docker.pkg.dev/sleepr-414922/reservations/production
+   command: pnpm run start:dev reservations
+   env_file:
+     - ../apps/reservations/.env
+   ports:
+    - "3000:3000"
+  
+  auth:
+    image: europe-west1-docker.pkg.dev/sleepr-414922/auth/production
+    command: pnpm run start:dev auth
+    env_file:
+      - ../apps/auth/.env
+    ports:
+      - "3001:3001"
+
+  
+  payments:
+   image: europe-west1-docker.pkg.dev/sleepr-414922/payments/production
+   command: pnpm run start:dev payments
+   env_file:
+     - ../apps/payments/.env
+  
+  notifications:
+   image: europe-west1-docker.pkg.dev/sleepr-414922/notifications/production
+   command: pnpm run start:dev notifications
+   env_file:
+     - ../apps/notifications/.env
+  
+  mongo:
+   image: mongo
