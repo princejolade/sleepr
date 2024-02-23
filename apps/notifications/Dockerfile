@@ -13,7 +13,11 @@ RUN pnpm install
 COPY apps/notifications apps/notifications
 COPY libs libs
 
-RUN cd apps/notifications && pnpm install
+WORKDIR /app/apps/notifications
+
+RUN pnpm install
+
+WORKDIR /app
 
 RUN pnpm run build notifications
 

@@ -13,7 +13,11 @@ RUN pnpm install
 COPY apps/payments apps/payments
 COPY libs libs
 
-RUN cd apps/payments && pnpm install
+WORKDIR /app/apps/payments
+
+RUN pnpm install
+
+WORKDIR /app
 
 RUN pnpm run build payments
 
