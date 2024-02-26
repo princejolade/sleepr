@@ -1,18 +1,25 @@
+version: '3.8'
 
 services:
   reservations:
-   build:
-    context: .
-    dockerfile: ./apps/reservations/Dockerfile
-    target: development
-   command: pnpm run start:dev reservations
-   env_file:
-     - ./apps/reservations/.env
-   ports:
-    - "3000:3000"
-   volumes:
-    - .:/app
-  
+    build:
+      context: .
+      dockerfile: ./apps/reservations/Dockerfile
+      target: development
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+      interval: 1m
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+    command: pnpm run start:dev reservations
+    env_file:
+      - ./apps/reservations/.env
+    ports:
+      - '3000:3000'
+    volumes:
+      - .:/app
+
   auth:
     build:
       context: .
@@ -21,31 +28,48 @@ services:
     env_file:
       - ./apps/auth/.env
     ports:
-      - "3001:3001"
+      - '3001:3001'
     volumes:
       - .:/app
-  
+
   payments:
-   build:
-    context: .
-    dockerfile: ./apps/payments/Dockerfile
-    target: development
-   command: pnpm run start:dev payments
-   env_file:
-     - ./apps/payments/.env
-   volumes:
-    - .:/app
-  
+    build:
+      context: .
+      dockerfile: ./apps/payments/Dockerfile
+      target: development
+    command: pnpm run start:dev payments
+    env_file:
+      - ./apps/payments/.env
+    volumes:
+      - .:/app
+
   notifications:
-   build:
-    context: .
-    dockerfile: ./apps/notifications/Dockerfile
-    target: development
-   command: pnpm run start:dev notifications
-   env_file:
-     - ./apps/notifications/.env
-   volumes:
-    - .:/app
-  
+    build:
+      context: .
+      dockerfile: ./apps/notifications/Dockerfile
+      target: development
+    command: pnpm run start:dev notifications
+    env_file:
+      - ./apps/notifications/.env
+    volumes:
+      - .:/app
+
+  gateway:
+    depends_on:
+      reservations:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./apps/gateway/Dockerfile
+      target: development
+    command: pnpm run start:dev gateway
+    restart: always
+    env_file:
+      - ./apps/gateway/.env
+    ports:
+      - '3002:3002'
+    volumes:
+      - .:/app
+
   mongo:
-   image: mongo
+    image: mongo

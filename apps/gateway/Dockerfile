@@ -4,28 +4,24 @@ WORKDIR /app
 
 COPY package.json .
 COPY pnpm-lock.yaml .
-COPY tsconfig.json tsconfig.json
-COPY nest-cli.json nest-cli.json
+COPY tsconfig.json .
+COPY nest-cli.json .
 
 RUN npm install -g pnpm
 RUN pnpm install 
 
-COPY apps/payments apps/payments
+
+COPY apps/gateway apps/gateway
 COPY libs libs
 
-WORKDIR /app/apps/payments
+RUN pnpm run build gateway
 
-RUN pnpm install
-
-WORKDIR /app
-
-RUN pnpm run build payments
-
-##############################
+########################
 
 FROM node:lts-alpine AS production
 
 ARG NODE_ENV=production
+
 ENV NODE_ENV=${NODE_ENV}
 
 WORKDIR /app
@@ -37,7 +33,5 @@ RUN npm install -g pnpm
 RUN pnpm install --prod
 
 COPY --from=development /app/dist ./dist
-COPY proto proto
 
-CMD ["node", "dist/apps/payments/main.js"]
-
+CMD [ "node", "dist/apps/gateway/main" ]

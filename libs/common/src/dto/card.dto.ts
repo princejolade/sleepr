@@ -4,18 +4,25 @@ import {
   IsNumber,
   IsNumberString,
 } from 'class-validator';
+import { CardMessage } from '../types/payments';
+import { Field, InputType } from '@nestjs/graphql';
 
-export class CardDto {
+@InputType()
+export class CardDto implements CardMessage {
   @IsNumberString()
   @IsNotEmpty()
+  @Field()
   cvc: string;
 
   @IsNumber()
-  exp_month: number;
+  @Field()
+  expMonth: number;
 
   @IsNumber()
-  exp_year: number;
+  @Field()
+  expYear: number;
 
   @IsCreditCard()
+  @Field()
   number: string;
 }
